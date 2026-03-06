@@ -1,0 +1,59 @@
+{
+  "" : {
+    "diagnostics" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/Fan noise control-primary.dia",
+    "emit-module-dependencies" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/Fan noise control-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/Fan noise control-primary-emit-module.dia",
+    "pch" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/Fan noise control-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/Fan noise control-primary.swiftdeps"
+  },
+  "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  },
+  "/Users/admin/Downloads/prj/Fan noise control/Fan noise control/ContentView.swift" : {
+    "const-values" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/ContentView.swiftconstvalues",
+    "dependencies" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/ContentView.d",
+    "diagnostics" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/ContentView.dia",
+    "index-unit-output-path" : "/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/ContentView.o",
+    "llvm-bc" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/ContentView.bc",
+    "object" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/ContentView.o",
+    "swift-dependencies" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/ContentView.swiftdeps",
+    "swiftmodule" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/ContentView~partial.swiftmodule"
+  },
+  "/Users/admin/Downloads/prj/Fan noise control/Fan noise control/Fan_noise_controlApp.swift" : {
+    "const-values" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/Fan_noise_controlApp.swiftconstvalues",
+    "dependencies" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/Fan_noise_controlApp.d",
+    "diagnostics" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/Fan_noise_controlApp.dia",
+    "index-unit-output-path" : "/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/Fan_noise_controlApp.o",
+    "llvm-bc" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/Fan_noise_controlApp.bc",
+    "object" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/Fan_noise_controlApp.o",
+    "swift-dependencies" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/Fan_noise_controlApp.swiftdeps",
+    "swiftmodule" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/Fan_noise_controlApp~partial.swiftmodule"
+  },
+  "/Users/admin/Downloads/prj/Fan noise control/Fan noise control/SMC.swift" : {
+    "const-values" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/SMC.swiftconstvalues",
+    "dependencies" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/SMC.d",
+    "diagnostics" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/SMC.dia",
+    "index-unit-output-path" : "/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/SMC.o",
+    "llvm-bc" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/SMC.bc",
+    "object" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/SMC.o",
+    "swift-dependencies" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/SMC.swiftdeps",
+    "swiftmodule" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/SMC~partial.swiftmodule"
+  },
+  "/Users/admin/Downloads/prj/Fan noise control/Fan noise control/SystemMonitor.swift" : {
+    "const-values" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/SystemMonitor.swiftconstvalues",
+    "dependencies" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/SystemMonitor.d",
+    "diagnostics" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/SystemMonitor.dia",
+    "index-unit-output-path" : "/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/SystemMonitor.o",
+    "llvm-bc" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/SystemMonitor.bc",
+    "object" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/SystemMonitor.o",
+    "swift-dependencies" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/SystemMonitor.swiftdeps",
+    "swiftmodule" : "/Users/admin/Downloads/prj/Fan noise control/Build/Build/Intermediates.noindex/Fan noise control.build/Debug/Fan noise control.build/Objects-normal/arm64/SystemMonitor~partial.swiftmodule"
+  }
+}

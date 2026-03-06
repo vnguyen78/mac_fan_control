@@ -1,0 +1,185 @@
+//
+//  SystemMonitor.swift
+//  FanNoiseControl
+//
+//  Created by admin on 2/2/26.
+//
+
+import Foundation
+import SwiftUI
+import Combine
+
+class SystemMonitor: ObservableObject {
+    @Published var cpuTemp: Double = 0.0
+    @Published var gpuTemp: Double = 0.0
+    @Published var fan0Speed: Double = 0.0
+    @Published var fan1Speed: Double = 0.0
+    
+    @Published var isManualControl: Bool = false
+    @Published var debugLog: String = "Initializing..."
+    
+    private var timer: Timer?
+    private let smc = SMC.shared
+    
+    struct SensorItem: Identifiable {
+        let id = UUID()
+        let key: String
+        let name: String
+        let value: Double
+        let type: SensorType
+    }
+    
+    enum SensorType {
+        case cpu
+        case gpu
+        case battery
+        case other
+    }
+
+    @Published var sensors: [SensorItem] = []
+    
+    // Discovered Keys
+    private var cpuCoreKeys: [String] = []
+    private var gpuCoreKeys: [String] = []
+    private var hasScanned = false
+    
+    init() {
+        startMonitoring()
+    }
+    
+    func startMonitoring() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.scanKeys()
+        }
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { _ in
+            self.refresh()
+        }
+    }
+    
+    func scanKeys() {
+        self.debugLog = smc.connectionLog
+        
+        if !smc.open() {
+            DispatchQueue.main.async { 
+                self.debugLog = self.smc.connectionLog + "\n\nSMC Open Failed (Sandbox? sudo?)" 
+            }
+            return
+        }
+        
+        var log = smc.connectionLog + "\nConnected. Scanning keys...\n"
+        
+        let allKeys = smc.getAllKeys()
+        log += "Total Keys Found: \(allKeys.count)\n"
+        
+        var cKeys: [String] = []
+        var gKeys: [String] = []
+        
+        // Only show meaningful temperature sensors
+        // TC = CPU Die, Tp = CPU Proximity/Package, Tg = GPU
+        // Filter out: TS (SSD), TW (Wireless), TB (Battery), TH (HDD), etc.
+        let meaningfulKeys = ["TC0P", "TC0D", "TC0E", "TC0F", "TC1C", "TC2C", "TC3C", "TC4C",
+                              "Tp01", "Tp05", "Tp09", "Tp0D", "Tp0P",  // Common CPU temp keys
+                              "Tg0D", "Tg0P", "Tg05", "Tg0T"]  // GPU keys
+        
+        for key in allKeys {
+            // Only include keys in our meaningful list
+            if meaningfulKeys.contains(key) {
+                if let val = smc.readKey(key) {
+                     // Filter valid temperature range
+                     if val > 0 && val < 120 {
+                         if key.hasPrefix("Tg") {
+                             gKeys.append(key)
+                         } else {
+                             cKeys.append(key)
+                         }
+                         log += "Found: \(key) = \(String(format: "%.1f", val))°C\n"
+                     }
+                }
+            }
+        }
+        
+        // Sort keys for better UI
+        cKeys.sort()
+        gKeys.sort()
+        
+        DispatchQueue.main.async {
+            self.cpuCoreKeys = cKeys
+            self.gpuCoreKeys = gKeys
+            self.debugLog = log
+            self.hasScanned = true
+        }
+    }
+    
+    func refresh() {
+        if !hasScanned { return }
+        
+        var newSensors: [SensorItem] = []
+        
+        // CPU - Use better names based on key
+        for key in cpuCoreKeys {
+            let val = smc.readKey(key) ?? 0
+            let name = getSensorName(key)
+            newSensors.append(SensorItem(key: key, name: name, value: val, type: .cpu))
+        }
+        
+        // GPU
+        for key in gpuCoreKeys {
+            let val = smc.readKey(key) ?? 0
+            let name = getSensorName(key)
+            newSensors.append(SensorItem(key: key, name: name, value: val, type: .gpu))
+        }
+        
+        // Fans
+        let f0 = smc.readKey("F0Ac") ?? 0
+        let f1 = smc.readKey("F1Ac") ?? 0
+        
+        // Calculate average CPU temp for auto mode
+        let avgCPU = newSensors.filter { $0.type == .cpu }.map { $0.value }.reduce(0, +) / Double(max(newSensors.filter { $0.type == .cpu }.count, 1))
+        
+        DispatchQueue.main.async {
+            self.cpuTemp = avgCPU
+            self.fan0Speed = f0
+            self.fan1Speed = f1
+            self.sensors = newSensors
+            // Don't update debug log during refresh to avoid UI blocking
+        }
+    }
+    
+    func setFanControl(manual: Bool, speed: Double) {
+        // Enable/Disable Manual Control
+        // Usually requires writing a Mode key.
+        // For simple implementations, just writing target (F0Tg) often works or writing "FS! "
+        
+        // This is highly hardware specific.
+        // Safe approach: Just try to write Target if manual.
+        
+        // Note: For 2 fans, we need to set both? Or provide separate controls.
+        // For MVP, lets set both fans to same speed.
+        
+        /*
+        To fully enable manual control on recent Macs, usually:
+        Write "FS! " (Force Set) with data=Uint16(mode)
+        Bit 0 = Auto/Manual?
+        Actually, often just writing F0Mn (Min) works.
+        */
+        
+        if manual {
+            let val = Int(speed * 4.0) // fpe2 format
+            let hi = UInt8((val >> 8) & 0xFF)
+            let lo = UInt8(val & 0xFF)
+            
+            _ = smc.writeKey("F0Tg", data: [hi, lo])
+            _ = smc.writeKey("F1Tg", data: [hi, lo])
+        } else {
+             // Reset to auto?
+             // Often setting 0 or a very low value returns to auto behavior? 
+             // Or we need to write the Manual key off.
+             // Leaving as-is for now (Manual Mode just updates target).
+        }
+        
+        DispatchQueue.main.async {
+            self.isManualControl = manual
+        }
+    }
+}

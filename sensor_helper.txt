@@ -1,0 +1,22 @@
+    private func getSensorName(_ key: String) -> String {
+        switch key {
+        case "TC0P": return "CPU Proximity"
+        case "TC0D": return "CPU Die"
+        case "TC0E": return "CPU Core 1"
+        case "TC0F": return "CPU Core 2"
+        case "TC1C": return "CPU Core 3"
+        case "TC2C": return "CPU Core 4"
+        case "TC3C": return "CPU Core 5"
+        case "TC4C": return "CPU Core 6"
+        case "Tp01": return "CPU Package"
+        case "Tp05": return "CPU Thermal"
+        case "Tp09": return "CPU Sensor 3"
+        case "Tp0D": return "CPU Sensor 4"
+        case "Tp0P": return "CPU Sensor 5"
+        case "Tg0D": return "GPU Die"
+        case "Tg0P": return "GPU Proximity"
+        case "Tg05": return "GPU Sensor 1"
+        case "Tg0T": return "GPU Sensor 2"
+        default: return key
+        }
+    }
