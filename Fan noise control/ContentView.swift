@@ -148,14 +148,14 @@ struct FanRowView: View {
             // Control
             HStack(spacing: 8) {
                 Picker("", selection: $isManual) {
-                    Text("Auto").tag(false)
+                    Text("Smart Auto").tag(false)
                     Text("Custom").tag(true)
                 }
                 .pickerStyle(.segmented)
-                .frame(width: 120)
+                .frame(width: 150)
                 .onChange(of: isManual) { _, newValue in
                     if !newValue {
-                        // Switched to Auto - apply immediately
+                        // Switched to Smart Auto - start applying
                         monitor.setFanControl(manual: false, speed: 0)
                     }
                 }

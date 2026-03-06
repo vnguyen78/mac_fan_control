@@ -81,10 +81,6 @@ class SystemMonitor: ObservableObject {
         // Priority: CPU Die temps, GPU cores, Package temps
         // Filter out: Peripheral sensors (Th=NAND, Tf=?, Ta=Ambient, etc.)
         
-        // Only show meaningful temperature sensors for M2 Max
-        // Priority: CPU Die temps, GPU cores, Package temps
-        // Filter out: Peripheral sensors (Th=NAND, Tf=?, Ta=Ambient, etc.)
-        
         // Airflow Keys: TaL* usually.
         
         let priorityPrefixes = [
@@ -161,16 +157,62 @@ class SystemMonitor: ObservableObject {
         let f0 = smc.readKey("F0Ac") ?? 0
         let f1 = smc.readKey("F1Ac") ?? 0
         
-        // Calculate average CPU temp for auto mode
-        let avgCPU = newSensors.filter { $0.type == .cpu }.map { $0.value }.reduce(0, +) / Double(max(newSensors.filter { $0.type == .cpu }.count, 1))
+        // Calculate average temperatures for auto mode
+        let cpuSensors = newSensors.filter { $0.type == .cpu }
+        let gpuSensors = newSensors.filter { $0.type == .gpu }
+        let airflowSensors = newSensors.filter { $0.type == .airflow }
+        
+        let avgCPU = cpuSensors.isEmpty ? 0 : cpuSensors.map { $0.value }.reduce(0, +) / Double(cpuSensors.count)
+        let avgGPU = gpuSensors.isEmpty ? 0 : gpuSensors.map { $0.value }.reduce(0, +) / Double(gpuSensors.count)
+        let avgAirflow = airflowSensors.isEmpty ? 0 : airflowSensors.map { $0.value }.reduce(0, +) / Double(airflowSensors.count)
+        
+        // Smart Auto Fan Control based on temps
+        if !self.isManualControl {
+            self.applySmartAuto(cpu: avgCPU, gpu: avgGPU, airflow: avgAirflow)
+        }
         
         DispatchQueue.main.async {
             self.cpuTemp = avgCPU
+            self.gpuTemp = avgGPU
             self.fan0Speed = f0
             self.fan1Speed = f1
             self.sensors = newSensors
             // Don't update debug log during refresh to avoid UI blocking
         }
+    }
+    
+    private func applySmartAuto(cpu: Double, gpu: Double, airflow: Double) {
+        // Find the maximum temperature among the averages to represent the worst-case scenario
+        let maxTemp = max(cpu, gpu, airflow)
+        
+        // Ignore invalid values
+        guard maxTemp > 0 && maxTemp < 150 else { return }
+        
+        // Define fan curve properties
+        let tempLow: Double = 45.0
+        let tempHigh: Double = 85.0
+        let rpmMin: Double = 1200.0
+        let rpmMax: Double = 6000.0
+        
+        var targetRPM = rpmMin
+        if maxTemp >= tempHigh {
+            targetRPM = rpmMax
+        } else if maxTemp > tempLow {
+            let ratio = (maxTemp - tempLow) / (tempHigh - tempLow)
+            // Quadratic curve for quieter operation at medium temps, but ramps up faster later
+            targetRPM = rpmMin + (ratio * ratio) * (rpmMax - rpmMin)
+        }
+        
+        // Apply target speed
+        _ = smc.writeKey("F0Md", data: [1])
+        _ = smc.writeKey("F1Md", data: [1])
+        
+        let val = Int(targetRPM * 4.0) // fpe2 format
+        let hi = UInt8((val >> 8) & 0xFF)
+        let lo = UInt8(val & 0xFF)
+        
+        _ = smc.writeKey("F0Tg", data: [hi, lo])
+        _ = smc.writeKey("F1Tg", data: [hi, lo])
     }
     
     func setFanControl(manual: Bool, speed: Double) {
@@ -190,21 +232,22 @@ class SystemMonitor: ObservableObject {
             _ = smc.writeKey("F0Tg", data: [hi, lo])
             _ = smc.writeKey("F1Tg", data: [hi, lo])
         } else {
-            // Reset to auto (F0Md = 0)
-             lastRet = smc.writeKey("F0Md", data: [0])
-             _ = smc.writeKey("F1Md", data: [0])
-             
-            // Also clear target just in case
-            _ = smc.writeKey("F0Tg", data: [0, 0])
-            _ = smc.writeKey("F1Tg", data: [0, 0])
+            // Smart Auto: just trigger refresh to recalculate immediately
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                self?.refresh()
+            }
         }
         
         DispatchQueue.main.async {
             self.isManualControl = manual
-            if lastRet == -536870207 { // kIOReturnNotPrivileged
-                self.debugLog += "\n⚠️ Fan control requires root privileges (sudo)."
-            } else if lastRet != 0 {
-                self.debugLog += "\n⚠️ Fan control failed: \(String(format: "0x%x", lastRet))"
+            if manual {
+                if lastRet == -536870207 { // kIOReturnNotPrivileged
+                    self.debugLog += "\n⚠️ Fan control requires root privileges (sudo)."
+                } else if lastRet != 0 {
+                    self.debugLog += "\n⚠️ Fan control failed: \(String(format: "0x%x", lastRet))"
+                }
+            } else {
+                self.debugLog += "\n✅ Switched to Smart Auto Mode."
             }
         }
     }
